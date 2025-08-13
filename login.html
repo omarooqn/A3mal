@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - محاسبة النفس</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <h1>محاسبة النفس</h1>
+        <p>تطبيق لمحاسبة النفس يومياً</p>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="password">كلمة المرور:</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit" class="btn">دخول</button>
+        </form>
+        <p id="error-message" style="color: red; display: none;">كلمة المرور غير صحيحة!</p>
+    </div>
+    <script>
+        // كلمة المرور الصحيحة
+        const CORRECT_PASSWORD = "64103";
+        
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+            
+            if (password === CORRECT_PASSWORD) {
+                localStorage.setItem('isLoggedIn', 'true');
+                window.location.href = 'index.html';
+            } else {
+                errorMessage.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

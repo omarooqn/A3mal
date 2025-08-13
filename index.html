@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق محاسبة النفس</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="login-container" id="login-container">
+        <div class="login-box">
+            <h1>تسجيل الدخول</h1>
+            <p>أدخل كلمة المرور للوصول إلى التطبيق</p>
+            <input type="password" id="password" placeholder="كلمة المرور">
+            <button onclick="checkPassword()">دخول</button>
+            <p id="error-message" class="error"></p>
+        </div>
+    </div>
+
+    <div class="app-container" id="app-container">
+        <header>
+            <h1><i class="fas fa-mosque"></i> تطبيق محاسبة النفس</h1>
+            <button id="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+        </header>
+
+        <main>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab('azkar-tab')"><i class="fas fa-quran"></i> الأذكار</button>
+                <button class="tab-btn" onclick="openTab('prayer-tab')"><i class="fas fa-pray"></i> الصلاة</button>
+                <button class="tab-btn" onclick="openTab('self-tab')"><i class="fas fa-user-check"></i> محاسبة النفس</button>
+            </div>
+
+            <div id="azkar-tab" class="tab-content active">
+                <h2><i class="fas fa-quran"></i> الأذكار اليومية</h2>
+                <div class="card">
+                    <div class="form-group">
+                        <label for="zekr-type">نوع الذكر:</label>
+                        <select id="zekr-type">
+                            <option value="استغفار">استغفار</option>
+                            <option value="سبحان الله">سبحان الله</option>
+                            <option value="الحمد لله">الحمد لله</option>
+                            <option value="الله أكبر">الله أكبر</option>
+                            <option value="لا إله إلا الله">لا إله إلا الله</option>
+                            <option value="أذكار الصباح">أذكار الصباح</option>
+                            <option value="أذكار المساء">أذكار المساء</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="zekr-count">عدد المرات:</label>
+                        <input type="number" id="zekr-count" min="1" value="100">
+                    </div>
+                    <div class="form-group">
+                        <label>حالة الإنجاز:</label>
+                        <div class="radio-group">
+                            <input type="radio" id="zekr-done" name="zekr-status" value="done" checked>
+                            <label for="zekr-done">تم</label>
+                            <input type="radio" id="zekr-not-done" name="zekr-status" value="not-done">
+                            <label for="zekr-not-done">لم يتم</label>
+                        </div>
+                    </div>
+                    <button class="btn-primary" onclick="addZekr()"><i class="fas fa-plus"></i> إضافة</button>
+                </div>
+
+                <h3>سجل الأذكار</h3>
+                <div class="table-container">
+                    <table id="azkar-table">
+                        <thead>
+                            <tr>
+                                <th>نوع الذكر</th>
+                                <th>العدد</th>
+                                <th>الحالة</th>
+                                <th>التاريخ</th>
+                                <th>إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="prayer-tab" class="tab-content">
+                <h2><i class="fas fa-pray"></i> الصلوات الخمس</h2>
+                <div class="prayer-grid">
+                    <div class="prayer-card" id="fajr-card">
+                        <h3>الفجر</h3>
+                        <div class="form-group">
+                            <label>مكان الصلاة:</label>
+                            <div class="radio-group">
+                                <input type="radio" id="fajr-mosque" name="fajr-place" value="mosque" checked>
+                                <label for="fajr-mosque">مسجد</label>
+                                <input type="radio" id="fajr-alone" name="fajr-place" value="alone">
+                                <label for="fajr-alone">منفرد</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>وقت الصلاة:</label>
+                            <div class="radio-group">
+                                <input type="radio" id="fajr-ontime" name="fajr-time" value="ontime" checked>
+                                <label for="fajr-ontime">في الوقت</label>
+                                <input type="radio" id="fajr-late" name="fajr-time" value="late">
+                                <label for="fajr-late">فائتة</label>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="savePrayer('fajr')"><i class="fas fa-save"></i> حفظ</button>
+                    </div>
+
+                    <div class="prayer-card" id="dhuhr-card">
+                        <h3>الظهر</h3>
+                        <div class="form-group">
+                            <label>مكان الصلاة:</label>
+                            <div class="radio-group">
+                                <input type="radio" id="dhuhr-mosque" name="dhuhr-place" value="mosque" checked>
+                                <label for="dhuhr-mosque">مسجد</label>
+                                <input type="radio" id="dhuhr-alone" name="dhuhr-place" value="alone">
+                                <label for="dhuhr-alone">منفرد</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>وقت الصلاة:</label>
+                            <div class="radio-group">
+                                <input type="radio" id="dhuhr-ontime" name="dhuhr-time" value="ontime" checked>
+                                <label for="dhuhr-ontime">في الوقت</label>
+                                <input type="radio" id="dhuhr-late" name="dhuhr-time" value="late">
+                                <label for="dhuhr-late">فائتة</label>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="savePrayer('dhuhr')"><i class="fas fa-save"></i> حفظ</button>
+                    </div>
+
+                    <div class="prayer-card" id="asr-card">
+                        <h3>العصر</h3>
+                        <div class="form-group">
+                            <label>مكان الصلاة:</label>
+                            <div class="radio-group">
+                                <input type="radio" id="asr-mosque" name="asr-place" value="mosque" checked>
+                                <label for="asr-mosque">مسجد</label>
+                                <input type="radio" id="asr-alone" name="asr-place" value="alone">
+                                <label for="asr-alone">منفرد</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>وقت الصلاة:</label>
+                            <div class="radio-group">
+                                <input type="radio" id="asr-ontime" name="asr-time" value="ontime" checked>
+                                <label for="asr-ontime">في الوقت</label>
+                                <input type="radio" id="asr-late" name="asr-time" value="late">
+                                <label for="asr-late">فائتة</label>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="savePrayer('asr')"><i class="fas fa-save"></i> حفظ</button>
+                    </div>
+
+                    <div class="prayer-card" id="maghrib-card">
+                        <h3>المغرب</h3>
+                        <div class="form-group">
+                            <label>مكان الصلاة:</label>
+                            <div class="radio-group">
+                                <input type="radio" id="maghrib-mosque" name="maghrib-place" value="mosque" checked>
+                                <label for="maghrib-mosque">مسجد</label>
+                                <input type="radio" id="maghrib-alone" name="maghrib-place" value="alone">
+                                <label for="maghrib-alone">منفرد</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>وقت الصلاة:</label>
+                            <div class="radio-group">
+                                <input type="radio" id="maghrib-ontime" name="maghrib-time" value="ontime" checked>
+                                <label for="maghrib-ontime">في الوقت</label>
+                                <input type="radio" id="maghrib-late" name="maghrib-time" value="late">
+                                <label for="maghrib-late">فائتة</label>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="savePrayer('maghrib')"><i class="fas fa-save"></i> حفظ</button>
+                    </div>
+
+                    <div class="prayer-card" id="isha-card">
+                        <h3>العشاء</h3>
+                        <div class="form-group">
+                            <label>مكان الصلاة:</label>
+                            <div class="radio-group">
+                                <input type="radio" id="isha-mosque" name="isha-place" value="mosque" checked>
+                                <label for="isha-mosque">مسجد</label>
+                                <input type="radio" id="isha-alone" name="isha-place" value="alone">
+                                <label for="isha-alone">منفرد</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>وقت الصلاة:</label>
+                            <div class="radio-group">
+                                <input type="radio" id="isha-ontime" name="isha-time" value="ontime" checked>
+                                <label for="isha-ontime">في الوقت</label>
+                                <input type="radio" id="isha-late" name="isha-time" value="late">
+                                <label for="isha-late">فائتة</label>
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="savePrayer('isha')"><i class="fas fa-save"></i> حفظ</button>
+                    </div>
+                </div>
+
+                <h3>سجل الصلوات</h3>
+                <div class="table-container">
+                    <table id="prayer-table">
+                        <thead>
+                            <tr>
+                                <th>الصلاة</th>
+                                <th>المكان</th>
+                                <th>الوقت</th>
+                                <th>التاريخ</th>
+                                <th>إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="self-tab" class="tab-content">
+                <h2><i class="fas fa-user-check"></i> محاسبة النفس</h2>
+                <div class="self-grid">
+                    <div class="self-card">
+                        <h3>الكذب</h3>
+                        <p>هل كذبت اليوم على أحد؟</p>
+                        <div class="form-group">
+                            <div class="radio-group">
+                                <input type="radio" id="lie-yes" name="lie" value="yes">
+                                <label for="lie-yes">نعم</label>
+                                <input type="radio" id="lie-no" name="lie" value="no" checked>
+                                <label for="lie-no">لا</label>
+                            </div>
+                        </div>
+                        <div class="form-group" id="lie-details" style="display: none;">
+                            <label for="lie-description">التفاصيل:</label>
+                            <textarea id="lie-description" rows="3"></textarea>
+                        </div>
+                        <button class="btn-primary" onclick="saveLie()"><i class="fas fa-save"></i> حفظ</button>
+                    </div>
+
+                    <div class="self-card">
+                        <h3>أكل لحم أحد</h3>
+                        <p>هل أكلت لحم أحد اليوم بالغيبة؟</p>
+                        <div class="form-group">
+                            <div class="radio-group">
+                                <input type="radio" id="gheebah-yes" name="gheebah" value="yes">
+                                <label for="gheebah-yes">نعم</label>
+                                <input type="radio" id="gheebah-no" name="gheebah" value="no" checked>
+                                <label for="gheebah-no">لا</label>
+                            </div>
+                        </div>
+                        <div class="form-group" id="gheebah-details" style="display: none;">
+                            <label for="gheebah-description">التفاصيل:</label>
+                            <textarea id="gheebah-description" rows="3"></textarea>
+                        </div>
+                        <button class="btn-primary" onclick="saveGheebah()"><i class="fas fa-save"></i> حفظ</button>
+                    </div>
+                </div>
+
+                <h3>سجل المحاسبة</h3>
+                <div class="table-container">
+                    <table id="self-table">
+                        <thead>
+                            <tr>
+                                <th>النوع</th>
+                                <th>الحالة</th>
+                                <th>التفاصيل</th>
+                                <th>التاريخ</th>
+                                <th>إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>تطبيق محاسبة النفس &copy; <span id="year"></span></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
